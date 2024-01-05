@@ -1,3 +1,8 @@
+"use client";
+// NextJS는 모든 컴포넌트가 서버 컴포넌트임. 클라이언트 컴포넌트를 만들고 싶다면 Next.js에게
+// 컴포넌트를 잡고 있는 파일 위에 위와 같은 명령어를 작성하면 됨.
+// 클라이언트 컴포넌트에서 사용하는 react 훅이나 이벤트핸들러를 사용 시 클라이언트 컴포넌트임.
+
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
@@ -41,6 +46,7 @@ export default function ImageSlideShow() {
           src={image.image}
           className={index === currentImageIndex ? classes.active : ""}
           alt={image.alt}
+          priority
         />
       ))}
     </div>
