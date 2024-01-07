@@ -2,9 +2,14 @@ import Image from "next/image";
 
 import { getMeal } from "@/lib/meals";
 import classes from "./page.module.css";
+import { notFound } from "next/navigation";
 
 export default function MealDetailsPage({ params }) {
   const meal = getMeal(params.mealSlug);
+
+  if (!meal) {
+    notFound(); // NextJS에서 제공하는 함수로 디렉토리 구조에서 가장 가까운 not-found.js 파일을 찾아 반환함
+  }
 
   meal.instructions = meal.instructions.replace(/\n/g, "<br />");
 
