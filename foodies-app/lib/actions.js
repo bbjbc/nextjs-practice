@@ -6,7 +6,11 @@ import { saveMeal } from "./meals";
 
 // server action이라는 것을 생성함. 오직 서버에서만 실행되는 함수임. async까지 붙여줘야 진짜 server action이 됨.
 
-export async function shareMeal(formData) {
+function isInvalidText(text) {
+  return !text || text.trim() === "";
+}
+
+export async function shareMeal(prevState, formData) {
   const meal = {
     title: formData.get("title"),
     summary: formData.get("summary"),
@@ -15,6 +19,21 @@ export async function shareMeal(formData) {
     creator: formData.get("name"),
     creator_email: formData.get("email"),
   };
+
+  if (
+    isInvalidText(meal.title) ||
+    isInvalidText(meal.summary) ||
+    isInvalidText(meal.instructions) ||
+    isInvalidText(meal.creator) ||
+    isInvalidText(meal.creator_email) ||
+    !meal.creator_email.includes("@") ||
+    !meal.image ||
+    meal.image.size === 0
+  ) {
+    return {
+      message: "Invalid input.",
+    };
+  }
 
   // console.log(meal);
   await saveMeal(meal); // saveMeal()함수는 promise를 반환하므로 async-await.
