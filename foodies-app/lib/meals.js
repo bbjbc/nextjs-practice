@@ -7,6 +7,7 @@ import xss from "xss";
 const db = sql("meals.db");
 
 export async function getMeals() {
+  console.log("Fetching meals");
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
   // throw new Error("Loading meals failed");

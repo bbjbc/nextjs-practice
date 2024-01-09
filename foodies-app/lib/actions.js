@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 import { saveMeal } from "./meals";
 
@@ -37,5 +38,8 @@ export async function shareMeal(prevState, formData) {
 
   // console.log(meal);
   await saveMeal(meal); // saveMeal()함수는 promise를 반환하므로 async-await.
+  revalidatePath("/meals"); // 이 함수는 NextJS가 특정 path에 속하는 캐시의 유효성 재검사를 하게 됨.
+  // layout이 두 번째 인수로 들어오면 /meals에 중첩된 모든 페이지를 검사하게 됨. default는 page로 단일 페이지만 재검사하는 것임.
+  // 하지만 여기서는 /meals 페이지만 재검사하면 됨.
   redirect("/meals");
 }
