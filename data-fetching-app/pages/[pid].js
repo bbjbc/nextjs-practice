@@ -2,9 +2,9 @@ import path from "path";
 import fs from "fs/promises";
 
 export default function ProductDetailPage({ loadedProduct }) {
-  //   if (!loadedProduct) {
-  //     return <p>Loading...</p>;
-  //   }
+  if (!loadedProduct) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -31,6 +31,10 @@ export async function getStaticProps(context) {
 
   const product = data.products.find((product) => product.id === productId);
 
+  if (!product) {
+    return { notFound: true };
+  }
+
   return {
     props: {
       loadedProduct: product,
@@ -51,7 +55,7 @@ export async function getStaticPaths() {
     paths: pathWithParams,
     //   { params: { pid: "p2" } },
     //   { params: { pid: "p3" } },
-    fallback: false, // blocking으로 설정할 경우에는 위에 Loading을 추가하지 않아도 됨. -> 서버에 완전히 사전 생성될 때까지 NextJS가 기다릴 것임.
+    fallback: true, // blocking으로 설정할 경우에는 위에 Loading을 추가하지 않아도 됨. -> 서버에 완전히 사전 생성될 때까지 NextJS가 기다릴 것임.
     // fallback을 true로 설정하면 p1만 설정해도 나머지 두 id가 작동함.
     // 사전에 생성되는 것은 아니고 요청이 서버에 도달하는 순간 시점에 생성되는 것임.
     // 하지만, url로 p2, p3를 입력하면 오류 -> 동적 사전 생성 기능이 즉시 끝나지 않기 때문임.
